@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "967617276060",
+    "project_id": "streetviewmap-13e2b",
+    "storage_bucket": "streetviewmap-13e2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967617276060:android:3bc57c12d07c08ee82a559",
+        "android_client_info": {
+          "package_name": "com.example.streetviewmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967617276060-gf8085i0it639ve2li0e6pl4fovv1tf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgpSFfl6w1XpirabsVc74Tu8KZx9jD4pE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967617276060-gf8085i0it639ve2li0e6pl4fovv1tf9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
