@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,11 +31,15 @@ public class MainActivity extends BaseActivity {
     private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         findViewsByIds();
         setClickers();
+        if(RoundSystem.getCustomMarker()==null){
+            RoundSystem.createMarkerBitMap(ResourcesCompat.getDrawable(getResources(),R.drawable.normal_marker,null),76,98,getApplicationContext());
+        }
         String[] role= {"",""};
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser= firebaseAuth.getCurrentUser();

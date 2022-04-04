@@ -15,8 +15,8 @@ public class MarkerStoreActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker_store);
         RecyclerView markersOptionsToBuy = (RecyclerView) findViewById(R.id.recyclerview);
-        String[] markersNames={"doge marker","fireBase marker"};
-        int[] markersId={R.drawable.doge_marker,R.drawable.fire_base_marker};
+        String[] markersNames={"default marker","doge marker","fireBase marker"};
+        int[] markersId={R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.fire_base_marker};
         recyclerViewMarkerData=RecyclerViewMarkerData.createMarkersList(markersNames,markersId);
         markersOptionsToBuy.setHasFixedSize(true);
         MarkersAdpters markersAdpters= new MarkersAdpters(recyclerViewMarkerData);
