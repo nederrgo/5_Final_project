@@ -2,10 +2,13 @@ package com.example.streetviewmap;
 
 
 import static com.example.streetviewmap.CalculateSystem.*;
+import static com.example.streetviewmap.RoundSystem.getCustomMarker;
+
 import androidx.annotation.NonNull;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +21,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -113,9 +118,17 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
     }
     private void addMarkers(GoogleMap googleMap) {
         MarkerOptions markerOptions= new MarkerOptions().position(gussPosition).title("your guss");
-        googleMap.addMarker(markerOptions);
+       Marker yourGussMarker= googleMap.addMarker(markerOptions);
+        if(getCustomMarker()!=null){
+            Bitmap marker=getCustomMarker();
+            yourGussMarker.setIcon(BitmapDescriptorFactory.fromBitmap(marker));
+        }
          markerOptions= new MarkerOptions().position(realPosition).title("where you were");
-        googleMap.addMarker(markerOptions);
+        Marker realPlaceMarker=googleMap.addMarker(markerOptions);
+        if(getCustomMarker()!=null){
+            Bitmap marker=getCustomMarker();
+            realPlaceMarker.setIcon(BitmapDescriptorFactory.fromBitmap(marker));
+        }
         Log.i("banana", "addMarkers: ");
     }
     public void setClickers(){

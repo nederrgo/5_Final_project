@@ -1,9 +1,10 @@
 package com.example.streetviewmap;
 
-import static com.example.streetviewmap.RoundSystem.resizeMapIcons;
+import static com.example.streetviewmap.RoundSystem.getCustomMarker;
 
 import androidx.annotation.NonNull;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -133,7 +134,10 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
         }
         markerOptions=new MarkerOptions().position(latLng);
         lastMarked=gMap.addMarker(markerOptions);
-        lastMarked.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(R.drawable.doge_marker,76,98,getApplicationContext())));
+        if(getCustomMarker()!=null){
+        Bitmap marker=getCustomMarker();
+        lastMarked.setIcon(BitmapDescriptorFactory.fromBitmap(marker));
+        }
     }
 
     private void submitGuss() {

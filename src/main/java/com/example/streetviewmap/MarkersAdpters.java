@@ -62,7 +62,12 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
             super(itemView);
             markerPicture =  (ImageView) itemView.findViewById(R.id.markerStyleImage);
             buyButton = (Button) itemView.findViewById(R.id.message_button);
+            buyButton.setOnClickListener(view -> {
+                Drawable markerDrawble= markerPicture.getDrawable();
+                RoundSystem.createMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
+            });
         }
+
     }
 
 }
