@@ -4,6 +4,7 @@ package com.example.streetviewmap;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity {
     private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private FirebaseUser currentUser;
     private FirebaseAuth firebaseAuth;
+    boolean[] whatMarkersArePurchased;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -47,8 +49,9 @@ public class MainActivity extends BaseActivity {
             goToLogInButton.setVisibility(View.INVISIBLE);
             goToSignInButton.setVisibility(View.INVISIBLE);
             signOutButton.setVisibility(View.VISIBLE);
-        dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-
+            goToStore.setVisibility(View.VISIBLE);
+           whatMarkersArePurchased=fireBaseUtil.getWhatStoreMarkersUserHave(MarkerStoreActivity.amountOfMarkers);
+            dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
@@ -88,7 +91,11 @@ public class MainActivity extends BaseActivity {
             sendToActivity(MainActivity.class);
         });
         goToStore.setOnClickListener(view -> {
-            sendToActivity(MarkerStoreActivity.class);
+            Intent intent=new Intent(this,MarkerStoreActivity.class);
+            intent.putExtra("markersBought",whatMarkersArePurchased);
+            Log.i("banana", "setClickers: "+whatMarkersArePurchased[0]);
+            startActivity(intent);
+            finish();
         });
     }
     public void sendToActivity(Object activity){

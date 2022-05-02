@@ -34,11 +34,11 @@ import java.util.Random;
 
 public class FireBaseUtil {
     private static FireBaseUtil fireBaseUtil;
-    private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
+    private  final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private final Random rng = new Random();
     private double lat=32.79139242166433;
     private double lon=34.99034071292447;
-    private FirebaseUser currentUser;
+    private  FirebaseUser currentUser;
     private FirebaseAuth userAuth;
     public FireBaseUtil() {
 
@@ -91,6 +91,21 @@ public class FireBaseUtil {
                 }
             }
         });
+    }
+    public  boolean[] getWhatStoreMarkersUserHave(int markerAmount){
+        final boolean[] isMarkersPurchased= new boolean[3];
+        userAuth = FirebaseAuth.getInstance();
+        currentUser= userAuth.getCurrentUser();
+        dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> data = documentSnapshot.getData();
+                for (int i = 0; i < isMarkersPurchased.length; i++) {
+                     isMarkersPurchased[i] = (boolean)data.get("marker"+i);
+                }
+            }
+        });
+        return isMarkersPurchased;
     }
 }
 

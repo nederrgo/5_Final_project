@@ -81,6 +81,7 @@
         android:layout_marginTop="52dp"
         android:layout_marginEnd="20dp"
         android:text="store"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/StartGameButton"
         app:layout_constraintTop_toBottomOf="@+id/StartGameButton" />
 
