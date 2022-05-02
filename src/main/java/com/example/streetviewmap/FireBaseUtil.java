@@ -41,7 +41,8 @@ public class FireBaseUtil {
     private  FirebaseUser currentUser;
     private FirebaseAuth userAuth;
     public FireBaseUtil() {
-
+        userAuth = FirebaseAuth.getInstance();
+        currentUser= userAuth.getCurrentUser();
     }
 
     public  void setNewLocation(double lat,double lon,String placeName) {
@@ -107,6 +108,7 @@ public class FireBaseUtil {
         });
         return isMarkersPurchased;
     }
+
 }
 
 

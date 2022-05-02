@@ -24,4 +24,8 @@ public class CalculateSystem {
     public static int points(double distance){
         return (int) Math.round(5000*Math.pow(Math.E,-distance/2000));
     }
+    public static int storePointCost(int position){
+        position=position+1;
+        return (int) (Math.pow(10,position)*1000*(position^2)/2);
+    }
 }

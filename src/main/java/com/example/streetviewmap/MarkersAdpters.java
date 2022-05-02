@@ -23,7 +23,6 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
     public  MarkersAdpters(List<RecyclerViewMarkerData> markersData){
         this.markersData = markersData;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,6 +31,7 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
         View markerBuyView = inflater.inflate(R.layout.recycler_view_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(markerBuyView);
         return viewHolder;
+
     }
 
     @Override
@@ -44,8 +44,14 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
         Bitmap bitmapOfMarker=((BitmapDrawable) markerDrawable).getBitmap();
         markerPicture.setImageBitmap(Bitmap.createScaledBitmap( bitmapOfMarker,76,98,false));
         Button buyButton=holder.buyButton;
-        buyButton.setTag(isPurchased);
+        buyButton.setTag(markerData);
         buyButton.setText(markerData.getName());
+            if(markerData.isPurchased){
+                buyButton.setText("use");
+            }else{
+                buyButton.setText("buy for "+CalculateSystem.storePointCost(markerData.position));
+            }
+
     }
 
     @Override
@@ -56,23 +62,29 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public ImageView markerPicture;
-        public Button buyButton;
+        ImageView markerPicture;
+        Button buyButton;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
+//            if(markerData.isPurchased){
+//                buyButton.setText("use");
+//            }else{
+//                buyButton.setText("buy for "+CalculateSystem.storePointCost(markerData.position));
+//            }
+
             markerPicture =  (ImageView) itemView.findViewById(R.id.markerStyleImage);
             buyButton = (Button) itemView.findViewById(R.id.message_button);
             buyButton.setOnClickListener(view -> {
-                if((boolean)buyButton.getTag()){
-                Drawable markerDrawble= markerPicture.getDrawable();
-                RoundSystem.createMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
+                RecyclerViewMarkerData markerData=(RecyclerViewMarkerData)buyButton.getTag();
+                if(markerData.isPurchased){
+                    Drawable markerDrawble= markerPicture.getDrawable();
+                    RoundSystem.createMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
                 }else{
-                    Log.i("banana", "ViewHolder: "+isPurchased);
-                }
+                    Log.i("banana", "ViewHolder: "+markerData.isPurchased); }
             });
         }
 
