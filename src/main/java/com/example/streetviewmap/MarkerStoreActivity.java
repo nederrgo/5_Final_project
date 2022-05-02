@@ -43,6 +43,7 @@ public class MarkerStoreActivity extends BaseActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         markersOptionsToBuy.setLayoutManager(linearLayoutManager);
         playerScoreText=findViewById(R.id.textPointsPlayerHas);
+        rightPlayerScore();
     }
     private void setPositionsList(){
         positions=new int[markersId.length];
