@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,10 +33,14 @@ public class SignInActivity extends BaseActivity {
         setContentView(R.layout.activity_sign_in);
         findViewsByIds();
         sighInButton.setOnClickListener(view -> {
-           String email=emailText.getText().toString();
+            if(!emailText.getText().toString().equals("")&&!passwordText.getText().toString().equals("")) {
+                String email=emailText.getText().toString();
            String password=passwordText.getText().toString();
             userAuth = FirebaseAuth.getInstance();
             createUser(email,password);
+            }else{
+                Toast.makeText(this,"one or more fields are empty",Toast.LENGTH_LONG).show();
+            }
         });
     }
     public void findViewsByIds(){
@@ -53,10 +58,14 @@ public class SignInActivity extends BaseActivity {
                     data.put("password",password);
                     data.put("points",0);
                     data.put("role","user");
+                    data.put("marker0",true);
+                    data.put("marker1",false);
+                    data.put("marker2",false);
                     DocumentReference userDuc= dataBase.collection("users").document(email);
                     userDuc.set(data);
                     Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

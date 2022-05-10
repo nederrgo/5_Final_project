@@ -1,5 +1,7 @@
 package com.example.streetviewmap;
 
+import static com.example.streetviewmap.FireBaseUtil.FireBaseHandlerCreator;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -38,14 +40,13 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecyclerViewMarkerData markerData=markersData.get(position);
         isPurchased=markerData.isPurchased;
-        Log.i("banana", "onBindViewHolder: "+isPurchased);
         ImageView markerPicture= holder.markerPicture;
         Drawable markerDrawable=ContextCompat.getDrawable(markerPicture.getContext(),markerData.getIdOfMarkerDrawble());
         Bitmap bitmapOfMarker=((BitmapDrawable) markerDrawable).getBitmap();
         markerPicture.setImageBitmap(Bitmap.createScaledBitmap( bitmapOfMarker,76,98,false));
         Button buyButton=holder.buyButton;
+        Log.i("banana", "isItPurchesed: "+isPurchased);
         buyButton.setTag(markerData);
-        buyButton.setText(markerData.getName());
             if(markerData.isPurchased){
                 buyButton.setText("use");
             }else{
@@ -60,22 +61,11 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
+
         ImageView markerPicture;
         Button buyButton;
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
-            // Stores the itemView in a public final member variable that can be used
-            // to access the context from any ViewHolder instance.
             super(itemView);
-//            if(markerData.isPurchased){
-//                buyButton.setText("use");
-//            }else{
-//                buyButton.setText("buy for "+CalculateSystem.storePointCost(markerData.position));
-//            }
-
             markerPicture =  (ImageView) itemView.findViewById(R.id.markerStyleImage);
             buyButton = (Button) itemView.findViewById(R.id.message_button);
             buyButton.setOnClickListener(view -> {
@@ -84,7 +74,10 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
                     Drawable markerDrawble= markerPicture.getDrawable();
                     RoundSystem.createMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
                 }else{
-                    Log.i("banana", "ViewHolder: "+markerData.isPurchased); }
+                    FireBaseUtil firebaseUser=FireBaseHandlerCreator();
+                    firebaseUser.buyMarkerAndEditPage(markerData.position,buyButton.getContext());
+                    Log.i("banana", "ViewHolder: "+markerData.isPurchased);
+                }
             });
         }
 

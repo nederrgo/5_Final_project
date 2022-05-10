@@ -30,10 +30,15 @@ public class LogInActivity extends BaseActivity {
         setContentView(R.layout.activity_log_in);
         findViewsByIds();
         logInButton.setOnClickListener(view -> {
-            userAuth=FirebaseAuth.getInstance();
-            String email=emailText.getText().toString();
-            String password=passwordText.getText().toString();
-            login(email,password);
+            if(!emailText.getText().toString().equals("")&&!passwordText.getText().toString().equals("")) {
+                userAuth = FirebaseAuth.getInstance();
+                String email = emailText.getText().toString();
+                String password = passwordText.getText().toString();
+                Log.i("banana", "onCreate: "+password);
+                login(email, password);
+            }else{
+                Toast.makeText(this,"one or more fields are empty",Toast.LENGTH_LONG).show();
+            }
             Log.i("work", "onCreate: ");
         });
 
@@ -48,16 +53,16 @@ public class LogInActivity extends BaseActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isComplete()){
-                    Log.i("work", "onComplete: ");
+                    Log.i("banana", "onComplete: ");
                 }
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("work", "signInWithEmail:success");
+                    Log.d("banana", "signInWithEmail:success");
                     startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     finish();
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("work", "signInWithEmail:failure", task.getException());
+                    Log.w("banana", "signInWithEmail:failure", task.getException());
                     Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                 }
             }

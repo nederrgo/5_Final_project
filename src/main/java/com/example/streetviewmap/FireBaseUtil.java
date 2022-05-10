@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Surface;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,8 +80,6 @@ public class FireBaseUtil {
     }
 
     public void addPoints(int pointsToAdd) {
-        userAuth = FirebaseAuth.getInstance();
-        currentUser= userAuth.getCurrentUser();
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -95,20 +95,54 @@ public class FireBaseUtil {
     }
     public  boolean[] getWhatStoreMarkersUserHave(int markerAmount){
         final boolean[] isMarkersPurchased= new boolean[3];
-        userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> data = documentSnapshot.getData();
                 for (int i = 0; i < isMarkersPurchased.length; i++) {
+                    if(data.get("marker"+i)!=null)
                      isMarkersPurchased[i] = (boolean)data.get("marker"+i);
                 }
             }
         });
         return isMarkersPurchased;
-    }
 
+    }
+    public void buyMarkerAndEditPage(int position, Context context){
+        dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> data = documentSnapshot.getData();
+                long playerScore=(long)data.get("points");
+                int cost=CalculateSystem.storePointCost(position+1);
+                if(cost>playerScore){
+                    Toast.makeText(currentUser.zza().getApplicationContext(),"you dont have enough points",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Map<String,Object> updateUserData=new HashMap<>();
+                updateUserData.put("points",playerScore-cost);
+                updateUserData.put("marker"+position,true);
+                //update data base and refresh a page
+                dataBase.collection("users").document(currentUser.getEmail()).update(updateUserData).onSuccessTask(new SuccessContinuation<Void, Object>() {
+                    @NonNull
+                    @Override
+                    public Task<Object> then(Void unused) throws Exception {
+                        Intent intent=new Intent();
+                        intent.putExtra("position",position);
+                        sendBroadcast(context,position);
+                        return null;
+                    }
+                });
+            }
+        });
+    }
+    private void sendBroadcast(Context context,int position){
+        Intent intent = new Intent();
+        intent.setAction("refreshPage");
+        intent.putExtra("position",position);
+        context.sendBroadcast(intent);
+    }
 }
 
 

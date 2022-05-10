@@ -53,7 +53,6 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_anew_place);
-
         findViewsByIds();
         mapView.onCreate(null);
         mapView.getMapAsync(this);

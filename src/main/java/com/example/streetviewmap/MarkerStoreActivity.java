@@ -5,6 +5,10 @@ import static com.example.streetviewmap.FireBaseUtil.FireBaseHandlerCreator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -12,7 +16,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.example.streetviewmap.FireBaseUtil;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,23 +30,45 @@ public class MarkerStoreActivity extends BaseActivity {
     private int[] positions;
     private TextView playerScoreText;
     public static int amountOfMarkers=markersId.length;
+    BroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker_store);
         boolean[] whatMarkersArePurchased=getIntent().getBooleanArrayExtra("markersBought");
-        Log.i("banana", "onCreate: "+whatMarkersArePurchased[0]);
         RecyclerView markersOptionsToBuy = (RecyclerView) findViewById(R.id.recyclerview);
         setPositionsList();
         markersOptionsToBuy.setHasFixedSize(true);
-        recyclerViewMarkerData=RecyclerViewMarkerData.createMarkersList(markersNames,markersId,whatMarkersArePurchased,positions);
+        recyclerViewMarkerData=RecyclerViewMarkerData.createMarkersList(markersId,whatMarkersArePurchased,positions);
         MarkersAdpters markersAdpters= new MarkersAdpters(recyclerViewMarkerData);
         markersOptionsToBuy.setAdapter(markersAdpters);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         markersOptionsToBuy.setLayoutManager(linearLayoutManager);
         playerScoreText=findViewById(R.id.textPointsPlayerHas);
-        rightPlayerScore();
+        if(getIntent().getLongExtra("playerScore",-4)==-4){
+            playerScore();
+        }else{
+            setText();
+        }
+         broadcastReceiver=new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int position=intent.getIntExtra("position",4);
+                Log.i("banana", "onReceive: "+position);
+                Log.i("banana", "onReceive: "+whatMarkersArePurchased[position]);
+                whatMarkersArePurchased[position]=true;
+                Intent refreshPage=new Intent(context,MarkerStoreActivity.class);
+                refreshPage.putExtra("markersBought",whatMarkersArePurchased);
+                int price=CalculateSystem.storePointCost(position);
+                long scorePlayerHave=Long.parseLong(playerScoreText.getText().toString().substring(0,playerScoreText.getText().toString().indexOf(" ")))-price;
+                refreshPage.putExtra("playerScore",scorePlayerHave);
+                startActivity(refreshPage);
+                finish();
+                //playerScoreText.setText(scorePlayerHave-CalculateSystem.storePointCost(position)+" points");
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter("refreshPage"));
     }
     private void setPositionsList(){
         positions=new int[markersId.length];
@@ -51,7 +76,7 @@ public class MarkerStoreActivity extends BaseActivity {
             positions[i]=i;
         }
     }
-    private void rightPlayerScore(){
+    private void playerScore(){
         FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
         FirebaseAuth userAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser= userAuth.getCurrentUser();
@@ -60,8 +85,17 @@ public class MarkerStoreActivity extends BaseActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> data = documentSnapshot.getData();
                 long playerScore=(long)data.get("points");
-                playerScoreText.setText(playerScore+" ");
+                playerScoreText.setText(playerScore+" points");
             }
         });
+    }
+    private void setText(){
+         long score=getIntent().getLongExtra("playerScore",0);
+         playerScoreText.setText(score+" points");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 }

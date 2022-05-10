@@ -1,4 +1,7 @@
 package com.example.streetviewmap;
+
+import android.util.Log;
+
 public class CalculateSystem {
     static CalculateSystem calculateSystem;
     private CalculateSystem(){
@@ -26,6 +29,7 @@ public class CalculateSystem {
     }
     public static int storePointCost(int position){
         position=position+1;
-        return (int) (Math.pow(10,position)*1000*(position^2)/2);
+        Log.i("banana", "storePointCost: "+position);
+        return (int) Math.pow(10,position)*position*1000;
     }
 }
