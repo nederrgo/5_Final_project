@@ -28,7 +28,7 @@ public class RoundSystem {
 
 
 
-    public static void createMarkerBitMap(Drawable drawable ,int width, int height, Context context){
+    public static void setMarkerBitMap(Drawable drawable , int width, int height, Context context){
         Bitmap imageBitmap  = ((BitmapDrawable)drawable).getBitmap();
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         customMarker=resizedBitmap;

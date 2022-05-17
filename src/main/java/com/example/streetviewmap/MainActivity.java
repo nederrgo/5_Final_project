@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
         findViewsByIds();
         setClickers();
         if(RoundSystem.getCustomMarker()==null){
-            RoundSystem.createMarkerBitMap(ResourcesCompat.getDrawable(getResources(),R.drawable.normal_marker,null),76,98,getApplicationContext());
+            RoundSystem.setMarkerBitMap(ResourcesCompat.getDrawable(getResources(),R.drawable.normal_marker,null),76,98,getApplicationContext());
         }
         String[] role= {"",""};
         firebaseAuth = FirebaseAuth.getInstance();
@@ -88,6 +88,7 @@ public class MainActivity extends BaseActivity {
         });
         signOutButton.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
+            RoundSystem.setMarkerBitMap(getResources().getDrawable(R.drawable.normal_marker,getTheme()),76,98,this);
             sendToActivity(MainActivity.class);
         });
         goToStore.setOnClickListener(view -> {

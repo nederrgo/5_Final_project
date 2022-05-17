@@ -68,7 +68,7 @@ public class FireBaseUtil {
                 List<DocumentSnapshot> myListOfDocuments=task.getResult().getDocuments();
                 int bound =myListOfDocuments.size();
                 int rngNum=rng.nextInt(bound);
-                Log.i("banana", "onComplete: "+rngNum);
+                Log.i("banana", "onComplete: "+rngNum+","+bound);
                 //getting the random location and display it on the map
                 DocumentSnapshot document = myListOfDocuments.get(rngNum);
                 Log.i("banana", "onComplete: "+document.get("name"));

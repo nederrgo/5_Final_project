@@ -130,7 +130,6 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
     private void chosePlaceWithMarker(LatLng latLng) {
         if(lastMarked!=null){lastMarked.remove();}else{
             submitGussButton.setEnabled(true);
-
         }
         markerOptions=new MarkerOptions().position(latLng);
         lastMarked=gMap.addMarker(markerOptions);

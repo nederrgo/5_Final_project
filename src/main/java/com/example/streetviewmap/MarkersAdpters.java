@@ -72,7 +72,7 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
                 RecyclerViewMarkerData markerData=(RecyclerViewMarkerData)buyButton.getTag();
                 if(markerData.isPurchased){
                     Drawable markerDrawble= markerPicture.getDrawable();
-                    RoundSystem.createMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
+                    RoundSystem.setMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
                 }else{
                     FireBaseUtil firebaseUser=FireBaseHandlerCreator();
                     firebaseUser.buyMarkerAndEditPage(markerData.position,buyButton.getContext());
