@@ -32,7 +32,6 @@ public class BaseActivity  extends AppCompatActivity implements LifecycleEventOb
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setTitle("geoNeder");
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser= firebaseAuth.getCurrentUser();
@@ -100,7 +99,6 @@ public class BaseActivity  extends AppCompatActivity implements LifecycleEventOb
     @Override
     public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
         if(Lifecycle.Event.ON_STOP.equals(event)){
-            Log.d("banana", "Background"+event.name());
             scheduleJob();
         } else if(Lifecycle.Event.ON_START.equals(event)){
             cancelJob();

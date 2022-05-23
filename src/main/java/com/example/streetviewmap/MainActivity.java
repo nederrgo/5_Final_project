@@ -26,6 +26,7 @@ public class MainActivity extends BaseActivity {
     Button goToLogInButton;
     Button signOutButton;
     Button goToStore;
+    Button goToSetNewPlaceByGPS;
     private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
     private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private FirebaseUser currentUser;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity {
                     role[0] = String.valueOf(data.get("role"));
                     if(role[0].equals("admin")){
                         createPlaceButton.setVisibility(View.VISIBLE);
+                        goToSetNewPlaceByGPS.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -72,10 +74,14 @@ public class MainActivity extends BaseActivity {
         goToLogInButton=findViewById(R.id.goToLogInButton);
         signOutButton=findViewById(R.id.buttonSighOut);
         goToStore=findViewById(R.id.buttonGotoStore);
+        goToSetNewPlaceByGPS=findViewById(R.id.buttonSendToUserGPS);
     }
     private void setClickers(){
         sendToGame.setOnClickListener(view -> {
          sendToActivity(GamePlayActivity.class);
+        });
+        goToSetNewPlaceByGPS.setOnClickListener(view -> {
+            sendToActivity(AddAdminLocationActivity.class);
         });
         createPlaceButton.setOnClickListener(view -> {
             sendToActivity(SetANewPlaceActivity.class);

@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"
@@ -45,7 +45,7 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapViewChoosePositionAdminSetActivity"
         android:layout_width="333dp"
-        android:layout_height="409dp"
+        android:layout_height="match_parent"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
