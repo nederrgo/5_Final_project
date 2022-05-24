@@ -1,10 +1,14 @@
 package com.example.streetviewmap;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,57 +20,62 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.Map;
 
 public class AddAdminLocationActivity extends BaseActivity {
     Button startTrackingButton;
-    Location userLocation;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int REQUEST = 112;
-
-    @Override
+    double lat;
+    double lon;
+    @SuppressLint("MissingPermission")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, UserTrackerByGPS.class));
         setContentView(R.layout.activity_add_admin_location);
         findViewsByIds();
-        startTrackingButton.setOnClickListener(view -> {
-            userLocation = UserTrackerByGPS.location;
-            if (userLocation != null) {
-                Toast.makeText(getApplicationContext(), "lat" + userLocation.getAltitude(), Toast.LENGTH_LONG).show();
-            } else {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+        FusedLocationProviderClient fusedLocationProviderClient=new FusedLocationProviderClient(getApplicationContext());
+        ActivityResultLauncher<String[]> requestPermissionsLauncher=registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onActivityResult(Map<String, Boolean> result) {
+                if(result!=null){
+                    boolean fine=result.get(Manifest.permission.ACCESS_FINE_LOCATION);
+                    boolean coarse=result.get(Manifest.permission.ACCESS_COARSE_LOCATION);
+                    if(fine&&coarse){
+                        startTrackingButton.setText("hello");
+                        fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(AddAdminLocationActivity.this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location!=null){
+                                    lat=location.getLatitude();
+                                    lon=location.getLongitude();
+                                }
+                            }
+                        });
+                    }
                 }
-                userLocation=fusedLocationProviderClient.getLastLocation().getResult();
-                Toast.makeText(getApplicationContext(), "lat" + userLocation.getAltitude(), Toast.LENGTH_LONG).show();
-
             }
         });
-    }
-    private void findViewsByIds(){
-        startTrackingButton=findViewById(R.id.buttonStartTracking);
-    }
-    private static boolean hasPermissions(Context context, String... permissions) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        String[] permissions={Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
+        requestPermissionsLauncher.launch(permissions);
+        startTrackingButton.setOnClickListener(v -> {
+            fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(AddAdminLocationActivity.this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location!=null){
+                        lat=location.getLatitude();
+                        lon=location.getLongitude();
+                        Toast.makeText(getApplicationContext(),lat+","+lon,Toast.LENGTH_LONG).show();
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "The app was not allowed to access your location", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        }
+            });
+        });
     }
+    private void findViewsByIds() {
+        startTrackingButton = findViewById(R.id.buttonStartTracking);
+    }
+
+
 }
