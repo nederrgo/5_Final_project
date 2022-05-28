@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity {
     Button signOutButton;
     Button goToStore;
     Button goToSetNewPlaceByGPS;
-    private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
+    //private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
     private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private FirebaseUser currentUser;
     private FirebaseAuth firebaseAuth;
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
             goToSignInButton.setVisibility(View.INVISIBLE);
             signOutButton.setVisibility(View.VISIBLE);
             goToStore.setVisibility(View.VISIBLE);
-           whatMarkersArePurchased=fireBaseUtil.getWhatStoreMarkersUserHave(MarkerStoreActivity.amountOfMarkers);
+           whatMarkersArePurchased=FireBaseUtil.getWhatStoreMarkersUserHave(MarkerStoreActivity.amountOfMarkers);
             dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

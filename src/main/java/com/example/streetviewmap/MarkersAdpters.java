@@ -1,6 +1,5 @@
 package com.example.streetviewmap;
 
-import static com.example.streetviewmap.FireBaseUtil.FireBaseHandlerCreator;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -74,8 +73,8 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
                     Drawable markerDrawble= markerPicture.getDrawable();
                     RoundSystem.setMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
                 }else{
-                    FireBaseUtil firebaseUser=FireBaseHandlerCreator();
-                    firebaseUser.buyMarkerAndEditPage(markerData.position,buyButton.getContext());
+                 //   FireBaseUtil firebaseUser=FireBaseHandlerCreator();
+                    FireBaseUtil.buyMarkerAndEditPage(markerData.position,buyButton.getContext());
                     Log.i("banana", "ViewHolder: "+markerData.isPurchased);
                 }
             });

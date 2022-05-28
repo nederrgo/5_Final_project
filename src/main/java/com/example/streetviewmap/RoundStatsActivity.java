@@ -43,7 +43,7 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
     private TextView pointsInGameText;
     int points;
     int pointsInGame;
-    private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
+    //private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +144,7 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
             startNextRound.setOnClickListener(view -> {
                     if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
                         int pointsToAdd = pointsInGame + points;
-                        fireBaseUtil.addPoints(pointsToAdd);
+                            FireBaseUtil.addPoints(pointsToAdd);
                     }
                     Intent sendToRound=new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(sendToRound);

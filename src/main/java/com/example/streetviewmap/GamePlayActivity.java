@@ -34,7 +34,7 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
     private MarkerOptions markerOptions;
     private Marker lastMarked;
     public ProgressBar loadingMap;
-    private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
+   // private final FireBaseUtil FIRE_BASE_UTIL = FireBaseUtil.FireBaseHandlerCreator();
     boolean firstTimeLoading =true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
     @Override
     public void onStreetViewPanoramaReady(@NonNull StreetViewPanorama streetViewPanorama) {
         mapStreetView=streetViewPanorama;
-        fireBaseUtil.setRandomPlace(mapStreetView);
+        FireBaseUtil.setRandomPlace(mapStreetView);
         streetViewPanorama.setStreetNamesEnabled(false);
         mapStreetView.setOnStreetViewPanoramaChangeListener(streetViewPanoramaCamera -> {
             streetViewPanoramaCamera=mapStreetView.getLocation();

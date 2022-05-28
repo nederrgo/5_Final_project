@@ -21,16 +21,10 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaView;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import com.google.android.gms.maps.model.StreetViewPanoramaLocation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
@@ -44,7 +38,7 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
     private MarkerOptions markerOptions;
     private Marker lastMarked;
     public ProgressBar loadingMap;
-    private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
+   // private final FireBaseUtil FIRE_BASE_UTIL = FireBaseUtil.FireBaseHandlerCreator();
     boolean firstTimeLoading =true;
     private ImageButton goBackToManuButton;
     private Button setNewPlaceButton;
@@ -139,7 +133,6 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
             if(cameraPov==null){
                 Toast.makeText(getApplicationContext(),"this isnt a place with a streetView",Toast.LENGTH_LONG).show();
             }else{
-            LatLng newPosition=markerOptions.getPosition();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Name");
             // set the custom layout
@@ -151,7 +144,7 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
                 public void onClick(DialogInterface dialog, int which) {
                     // send data from the AlertDialog to the Activity
                     TextView editText = customLayout.findViewById(R.id.setNewPlaceText);
-                    fireBaseUtil.setNewLocation(newPosition.latitude, newPosition.longitude, editText.getText().toString());
+                    FireBaseUtil.setNewLocation(cameraPov.position.latitude, cameraPov.position.longitude, editText.getText().toString());
                 }
             });
             builder.setNegativeButton("close",new DialogInterface.OnClickListener(){

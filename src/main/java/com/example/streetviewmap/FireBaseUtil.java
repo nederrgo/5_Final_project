@@ -36,32 +36,34 @@ import java.util.Random;
 
 public class FireBaseUtil {
     private static FireBaseUtil fireBaseUtil;
-    private  final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
-    private final Random rng = new Random();
-    private double lat=32.79139242166433;
-    private double lon=34.99034071292447;
-    private  FirebaseUser currentUser;
-    private FirebaseAuth userAuth;
-    public FireBaseUtil() {
+    private  final static FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
+    private final static Random rng = new Random();
+    private static double lat=32.79139242166433;
+    private static double lon=34.99034071292447;
+    private static FirebaseUser currentUser;
+    private static FirebaseAuth userAuth;
+ /*   public FireBaseUtil() {
         userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
     }
-
-    public  void setNewLocation(double lat,double lon,String placeName) {
+    public static FireBaseUtil FireBaseHandlerCreator(){
+        if(fireBaseUtil ==null){
+            fireBaseUtil =new FireBaseUtil();
+        }
+        return fireBaseUtil;
+    }*/
+    public static void  setNewLocation(double lat,double lon,String placeName) {
+        userAuth = FirebaseAuth.getInstance();
+        currentUser= userAuth.getCurrentUser();
                 Map<String,Object> data=new HashMap<>();
                 data.put("lat",lat);
                 data.put("lon",lon);
                 data.put("name",placeName);
                 dataBase.collection("places").document().set(data);
                 }
-
-    public static FireBaseUtil FireBaseHandlerCreator(){
-        if(fireBaseUtil ==null){
-            fireBaseUtil =new FireBaseUtil();
-        }
-        return fireBaseUtil;
-    }
-    public void setRandomPlace(StreetViewPanorama streetViewMap){
+    public static void setRandomPlace(StreetViewPanorama streetViewMap){
+        userAuth = FirebaseAuth.getInstance();
+        currentUser= userAuth.getCurrentUser();
         dataBase.collection("places").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -79,7 +81,9 @@ public class FireBaseUtil {
         });
     }
 
-    public void addPoints(int pointsToAdd) {
+    public static void addPoints(int pointsToAdd) {
+        userAuth = FirebaseAuth.getInstance();
+        currentUser= userAuth.getCurrentUser();
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -93,9 +97,10 @@ public class FireBaseUtil {
             }
         });
     }
-    public  boolean[] getWhatStoreMarkersUserHave(int markerAmount){
-        final boolean[] isMarkersPurchased= new boolean[3];
+    public  static boolean[] getWhatStoreMarkersUserHave(int markerAmount){
+        userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
+        final boolean[] isMarkersPurchased= new boolean[3];
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -109,7 +114,9 @@ public class FireBaseUtil {
         return isMarkersPurchased;
 
     }
-    public void buyMarkerAndEditPage(int position, Context context){
+    public static void buyMarkerAndEditPage(int position, Context context){
+        userAuth = FirebaseAuth.getInstance();
+        currentUser= userAuth.getCurrentUser();
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -137,7 +144,7 @@ public class FireBaseUtil {
             }
         });
     }
-    private void sendBroadcast(Context context,int position){
+    private static void sendBroadcast(Context context,int position){
         Intent intent = new Intent();
         intent.setAction("refreshPage");
         intent.putExtra("position",position);

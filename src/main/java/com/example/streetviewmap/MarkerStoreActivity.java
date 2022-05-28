@@ -1,6 +1,5 @@
 package com.example.streetviewmap;
 
-import static com.example.streetviewmap.FireBaseUtil.FireBaseHandlerCreator;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MarkerStoreActivity extends BaseActivity {
     ArrayList<RecyclerViewMarkerData> recyclerViewMarkerData;
-    FireBaseUtil fireBaseUtil=FireBaseHandlerCreator();
     private static int[] markersId={R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.fire_base_marker};
     private String[] markersNames={"default marker","doge marker","fireBase marker"};
     private int[] positions;

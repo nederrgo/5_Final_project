@@ -26,7 +26,6 @@ public class SignInActivity extends BaseActivity {
     Button sighInButton;
     private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     FirebaseAuth userAuth;
-    private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
