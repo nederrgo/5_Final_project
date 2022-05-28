@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MainActivity extends BaseActivity {
@@ -27,11 +28,10 @@ public class MainActivity extends BaseActivity {
     Button signOutButton;
     Button goToStore;
     Button goToSetNewPlaceByGPS;
-    //private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
     private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private FirebaseUser currentUser;
     private FirebaseAuth firebaseAuth;
-    boolean[] whatMarkersArePurchased;
+    ArrayList<Integer> whatMarkersArePurchased;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -93,14 +93,12 @@ public class MainActivity extends BaseActivity {
             sendToActivity(LogInActivity.class);
         });
         signOutButton.setOnClickListener(view -> {
-            FirebaseAuth.getInstance().signOut();
-            RoundSystem.setMarkerBitMap(getResources().getDrawable(R.drawable.normal_marker,getTheme()),76,98,this);
-            sendToActivity(MainActivity.class);
+            FireBaseUtil.sighOut(this);
         });
         goToStore.setOnClickListener(view -> {
             Intent intent=new Intent(this,MarkerStoreActivity.class);
             intent.putExtra("markersBought",whatMarkersArePurchased);
-            Log.i("banana", "setClickers: "+whatMarkersArePurchased[0]);
+            Log.i("banana", "setClickers: "+whatMarkersArePurchased.get(0));
             startActivity(intent);
             finish();
         });

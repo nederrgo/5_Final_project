@@ -72,11 +72,7 @@ public class BaseActivity  extends AppCompatActivity implements LifecycleEventOb
             finish();
         }
         if(id==R.id.signOutMenu){
-            FirebaseAuth.getInstance().signOut();
-            RoundSystem.setMarkerBitMap(getResources().getDrawable(R.drawable.normal_marker,getTheme()),76,98,this);
-            Log.i("work", "onOptionsItemSelected: loged out "+FirebaseAuth.getInstance().getCurrentUser());
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
+            FireBaseUtil.sighOut(this);
         }
         return true;
     }

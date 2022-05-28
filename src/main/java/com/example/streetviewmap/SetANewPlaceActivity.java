@@ -38,7 +38,6 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
     private MarkerOptions markerOptions;
     private Marker lastMarked;
     public ProgressBar loadingMap;
-   // private final FireBaseUtil FIRE_BASE_UTIL = FireBaseUtil.FireBaseHandlerCreator();
     boolean firstTimeLoading =true;
     private ImageButton goBackToManuButton;
     private Button setNewPlaceButton;

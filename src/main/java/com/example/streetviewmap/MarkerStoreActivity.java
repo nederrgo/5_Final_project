@@ -23,21 +23,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MarkerStoreActivity extends BaseActivity {
     ArrayList<RecyclerViewMarkerData> recyclerViewMarkerData;
-    private static int[] markersId={R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.fire_base_marker};
-    private String[] markersNames={"default marker","doge marker","fireBase marker"};
+    private static int[] markersId={R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.fire_base_marker,R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.normal_marker,R.drawable.doge_marker};
     private int[] positions;
     private TextView playerScoreText;
     public static int amountOfMarkers=markersId.length;
     BroadcastReceiver broadcastReceiver;
+    ArrayList<Integer>whatMarkersArePurchased;
+    boolean[] userMarkerList=new boolean[markersId.length];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker_store);
-        boolean[] whatMarkersArePurchased=getIntent().getBooleanArrayExtra("markersBought");
+        whatMarkersArePurchased=getIntent().getIntegerArrayListExtra("markersBought");
+        userMarkerOwnedList();
         RecyclerView markersOptionsToBuy = (RecyclerView) findViewById(R.id.recyclerview);
         setPositionsList();
         markersOptionsToBuy.setHasFixedSize(true);
-        recyclerViewMarkerData=RecyclerViewMarkerData.createMarkersList(markersId,whatMarkersArePurchased,positions);
+        recyclerViewMarkerData=RecyclerViewMarkerData.createMarkersList(markersId,userMarkerList,positions);
         MarkersAdpters markersAdpters= new MarkersAdpters(recyclerViewMarkerData);
         markersOptionsToBuy.setAdapter(markersAdpters);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
@@ -54,8 +56,8 @@ public class MarkerStoreActivity extends BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 int position=intent.getIntExtra("position",4);
                 Log.i("banana", "onReceive: "+position);
-                Log.i("banana", "onReceive: "+whatMarkersArePurchased[position]);
-                whatMarkersArePurchased[position]=true;
+                Log.i("banana", "onReceive: "+userMarkerList[position]);
+                whatMarkersArePurchased.add(position);
                 Intent refreshPage=new Intent(context,MarkerStoreActivity.class);
                 refreshPage.putExtra("markersBought",whatMarkersArePurchased);
                 int price=CalculateSystem.storePointCost(position);
@@ -95,5 +97,11 @@ public class MarkerStoreActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+    }
+    private boolean[] userMarkerOwnedList(){
+        for(int i =0;i<whatMarkersArePurchased.size();i++){
+            userMarkerList[whatMarkersArePurchased.get(i)]=true;
+        }
+        return userMarkerList;
     }
 }

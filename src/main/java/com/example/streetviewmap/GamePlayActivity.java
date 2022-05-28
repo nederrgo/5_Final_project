@@ -34,7 +34,6 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
     private MarkerOptions markerOptions;
     private Marker lastMarked;
     public ProgressBar loadingMap;
-   // private final FireBaseUtil FIRE_BASE_UTIL = FireBaseUtil.FireBaseHandlerCreator();
     boolean firstTimeLoading =true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

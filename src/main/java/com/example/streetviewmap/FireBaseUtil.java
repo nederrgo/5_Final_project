@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,25 +38,13 @@ import java.util.Random;
 
 
 public class FireBaseUtil {
-    private static FireBaseUtil fireBaseUtil;
     private  final static FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private final static Random rng = new Random();
     private static double lat=32.79139242166433;
     private static double lon=34.99034071292447;
     private static FirebaseUser currentUser;
-    private static FirebaseAuth userAuth;
- /*   public FireBaseUtil() {
-        userAuth = FirebaseAuth.getInstance();
-        currentUser= userAuth.getCurrentUser();
-    }
-    public static FireBaseUtil FireBaseHandlerCreator(){
-        if(fireBaseUtil ==null){
-            fireBaseUtil =new FireBaseUtil();
-        }
-        return fireBaseUtil;
-    }*/
+    private static FirebaseAuth userAuth=FirebaseAuth.getInstance();;
     public static void  setNewLocation(double lat,double lon,String placeName) {
-        userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
                 Map<String,Object> data=new HashMap<>();
                 data.put("lat",lat);
@@ -62,7 +53,6 @@ public class FireBaseUtil {
                 dataBase.collection("places").document().set(data);
                 }
     public static void setRandomPlace(StreetViewPanorama streetViewMap){
-        userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
         dataBase.collection("places").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -82,7 +72,6 @@ public class FireBaseUtil {
     }
 
     public static void addPoints(int pointsToAdd) {
-        userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -97,25 +86,25 @@ public class FireBaseUtil {
             }
         });
     }
-    public  static boolean[] getWhatStoreMarkersUserHave(int markerAmount){
-        userAuth = FirebaseAuth.getInstance();
+    public  static ArrayList<Integer> getWhatStoreMarkersUserHave(int markerAmount){
         currentUser= userAuth.getCurrentUser();
-        final boolean[] isMarkersPurchased= new boolean[3];
+        final ArrayList<Integer> isMarkersPurchased=new ArrayList<Integer>();
+        //final boolean[] isMarkersPurchased= new boolean[7];
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> data = documentSnapshot.getData();
-                for (int i = 0; i < isMarkersPurchased.length; i++) {
+                for (int i = 0; i < data.size(); i++) {
                     if(data.get("marker"+i)!=null)
-                     isMarkersPurchased[i] = (boolean)data.get("marker"+i);
+                    isMarkersPurchased.add(i);
                 }
             }
         });
         return isMarkersPurchased;
-
     }
+
+
     public static void buyMarkerAndEditPage(int position, Context context){
-        userAuth = FirebaseAuth.getInstance();
         currentUser= userAuth.getCurrentUser();
         dataBase.collection("users").document(currentUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -149,6 +138,13 @@ public class FireBaseUtil {
         intent.setAction("refreshPage");
         intent.putExtra("position",position);
         context.sendBroadcast(intent);
+    }
+    public static void sighOut(AppCompatActivity activity){
+        FirebaseAuth.getInstance().signOut();
+        RoundSystem.setMarkerBitMap(activity.getResources().getDrawable(R.drawable.normal_marker,activity.getTheme()),76,98,activity);
+        Log.i("work", "onOptionsItemSelected: loged out "+FirebaseAuth.getInstance().getCurrentUser());
+        activity.startActivity(new Intent(activity,MainActivity.class));
+        activity.finish();
     }
 }
 

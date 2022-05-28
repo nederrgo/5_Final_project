@@ -1,13 +1,11 @@
 package com.example.streetviewmap;
 
-import android.app.Service;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
 public class GetNotificationDissmisBroadcast extends BroadcastReceiver {

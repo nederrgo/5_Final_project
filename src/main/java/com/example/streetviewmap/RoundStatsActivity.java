@@ -43,7 +43,6 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
     private TextView pointsInGameText;
     int points;
     int pointsInGame;
-    //private final FireBaseUtil fireBaseUtil = FireBaseUtil.FireBaseHandlerCreator();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
