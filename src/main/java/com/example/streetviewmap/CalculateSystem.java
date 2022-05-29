@@ -6,11 +6,11 @@ import android.util.Log;
 public class CalculateSystem {
     /**
      *
-     * @param lat1
-     * @param lat2
-     * @param lon1
-     * @param lon2
-     * @return
+     * @param lat1 lat of the place the player gussed.
+     * @param lat2 lat of the place the player really was in .
+     * @param lon1 lon of the place the player gussed.
+     * @param lon2 lon of the place the player really was in.
+     * @return the distance between the place the player gussed to where he really was.
      */
     public static double distance(double lat1, double lat2, double lon1, double lon2) {
         final int R = 6371; // Radius of the earth
@@ -24,16 +24,16 @@ public class CalculateSystem {
     }
 
     /**
-     * @param distance
-     * @return
+     * @param distance get the distance between the place the player gussed to where he really was.
+     * @return the amount of points the player gets for this distance.
      */
     public static int points(double distance) {
         return (int) Math.round(5000 * Math.pow(Math.E, -distance / 2000));
     }
 
     /**
-     * @param position
-     * @return
+     * @param position the position that the marker is in the recycleView.
+     * @return the amount of points the player needs to be able to buy the marker.
      */
     public static int storePointCost(int position) {
         position = position + 1;

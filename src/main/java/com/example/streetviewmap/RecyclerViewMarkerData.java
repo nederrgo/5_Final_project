@@ -18,8 +18,6 @@ public class RecyclerViewMarkerData {
         return idOfMarkerDrawble;
     }
 
-    private static int lastMarkerId=0;
-
     public static ArrayList<RecyclerViewMarkerData> createMarkersList(int[] markersDrawble,boolean[] isSPurchased,int[] positions){
         ArrayList<RecyclerViewMarkerData> recyclerViewMarkerData =new ArrayList<RecyclerViewMarkerData>();
         for(int i = 0; i <markersDrawble.length; i++){

@@ -74,7 +74,7 @@ public class MarkersAdpters extends RecyclerView.Adapter<MarkersAdpters.ViewHold
                     RoundSystem.setMarkerBitMap(markerDrawble,76,98,buyButton.getContext());
                 }else{
                  //   FireBaseUtil firebaseUser=FireBaseHandlerCreator();
-                    FireBaseUtil.buyMarkerAndEditPage(markerData.position,buyButton.getContext());
+                    FireBaseUtil.buyMarkerAndRefreshPage(markerData.position,buyButton.getContext());
                     Log.i("banana", "ViewHolder: "+markerData.isPurchased);
                 }
             });

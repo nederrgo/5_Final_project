@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import androidx.core.content.ContextCompat;
 
 public class RoundSystem {
     protected static int roundNum=1;
