@@ -33,9 +33,9 @@ import java.util.Map;
  */
 public class AddAdminLocationActivity extends BaseActivity implements OnStreetViewPanoramaReadyCallback {
     /**
-     * The Start tracking button.
+     * The get location button.
      */
-    Button startTrackingButton;
+    Button getLocationButton;
     /**
      * The Lat of the player location (comes from camera pov) .
      */
@@ -62,13 +62,15 @@ public class AddAdminLocationActivity extends BaseActivity implements OnStreetVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_admin_location);
         findViewsByIds();
+        //setting up the street view map.
         streetViewPlayerVision.onCreate(null);
         streetViewPlayerVision.getStreetViewPanoramaAsync(this);
         FusedLocationProviderClient fusedLocationProviderClient=new FusedLocationProviderClient(getApplicationContext());
         ActivityResultLauncher<String[]> requestPermissionsLauncher=launchPermissions(fusedLocationProviderClient);
         String[] permissions={Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
         requestPermissionsLauncher.launch(permissions);
-        startTrackingButton.setOnClickListener(v -> {
+        getLocationButton.setOnClickListener(v -> {
+            //launch the permissions request.
             requestPermissionsLauncher.launch(permissions);
             fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(AddAdminLocationActivity.this, new OnSuccessListener<Location>() {
                 @Override
@@ -118,7 +120,7 @@ public class AddAdminLocationActivity extends BaseActivity implements OnStreetVi
     }
 
     private void findViewsByIds() {
-        startTrackingButton = findViewById(R.id.buttonStartTracking);
+        getLocationButton = findViewById(R.id.buttonStartTracking);
         streetViewPlayerVision=findViewById(R.id.mapViewStreetAddAdminLocation);
         setNewLocationButton=findViewById(R.id.buttonSetAdminPlace);
     }

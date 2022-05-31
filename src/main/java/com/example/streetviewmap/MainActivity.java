@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -20,17 +23,44 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends BaseActivity {
-    Button sendToGame;
+    /**
+     * The Send to game button.
+     */
+    Button sendToGameButton;
+    /**
+     * The Create place button.
+     */
     Button createPlaceButton;
+    /**
+     * The Go to sign in button.
+     */
     Button goToSignInButton;
+    /**
+     * The Go to log in button.
+     */
     Button goToLogInButton;
+    /**
+     * The Sign out button.
+     */
     Button signOutButton;
+    /**
+     * The Go to store.
+     */
     Button goToStore;
-    Button goToSetNewPlaceByGPS;
+    /**
+     * The Go to set new place by gps button.
+     */
+    Button goToSetNewPlaceByGPSButton;
     private final FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
     private FirebaseUser currentUser;
     private FirebaseAuth firebaseAuth;
+    /**
+     * The What markers are purchased array.
+     */
     ArrayList<Integer> whatMarkersArePurchased;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,27 +90,35 @@ public class MainActivity extends BaseActivity {
                     role[0] = String.valueOf(data.get("role"));
                     if(role[0].equals("admin")){
                         createPlaceButton.setVisibility(View.VISIBLE);
-                        goToSetNewPlaceByGPS.setVisibility(View.VISIBLE);
+                        goToSetNewPlaceByGPSButton.setVisibility(View.VISIBLE);
                     }
                 }
             }
         });
         }
     }
+
+    /**
+     * Find views by ids.
+     */
     private void findViewsByIds(){
-        sendToGame=findViewById(R.id.StartGameButton);
+        sendToGameButton =findViewById(R.id.StartGameButton);
         createPlaceButton=findViewById(R.id.createANewPlaceButton);
         goToSignInButton =findViewById(R.id.goToSignInButton);
         goToLogInButton=findViewById(R.id.goToLogInButton);
         signOutButton=findViewById(R.id.buttonSighOut);
         goToStore=findViewById(R.id.buttonGotoStore);
-        goToSetNewPlaceByGPS=findViewById(R.id.buttonSendToUserGPS);
+        goToSetNewPlaceByGPSButton =findViewById(R.id.buttonSendToUserGPS);
     }
+
+    /**
+     * set the on click events
+     */
     private void setClickers(){
-        sendToGame.setOnClickListener(view -> {
+        sendToGameButton.setOnClickListener(view -> {
          sendToActivity(GamePlayActivity.class);
         });
-        goToSetNewPlaceByGPS.setOnClickListener(view -> {
+        goToSetNewPlaceByGPSButton.setOnClickListener(view -> {
             sendToActivity(AddAdminLocationActivity.class);
         });
         createPlaceButton.setOnClickListener(view -> {
@@ -103,10 +141,30 @@ public class MainActivity extends BaseActivity {
             finish();
         });
     }
+
+    /**
+     * Send to activity.
+     *
+     * @param activity the activity
+     */
     public void sendToActivity(Object activity){
         Intent intent=new Intent(getApplicationContext(), (Class<?>) activity);
         startActivity(intent);
         finish();
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // inflates the menu XML into view
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item;
+        item=menu.findItem(R.id.goToMainActiviyMenu);
+        item.setVisible(false);
+        if (itemOfMenu == null) {
+            itemOfMenu = menu.findItem(R.id.signOutMenu);
+        }
+        if (currentUser == null) {
+            itemOfMenu.setVisible(false);
+        }
+        return true;
+    }
 }

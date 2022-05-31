@@ -3,8 +3,12 @@ package com.example.streetviewmap;
 import android.util.Log;
 
 
+/**
+ * The type Calculate system.
+ */
 public class CalculateSystem {
     /**
+     * Distance.
      *
      * @param lat1 lat of the place the player gussed.
      * @param lat2 lat of the place the player really was in .
@@ -24,6 +28,8 @@ public class CalculateSystem {
     }
 
     /**
+     * Points int.
+     *
      * @param distance get the distance between the place the player gussed to where he really was.
      * @return the amount of points the player gets for this distance.
      */
@@ -32,6 +38,8 @@ public class CalculateSystem {
     }
 
     /**
+     * Store point cost int.
+     *
      * @param position the position that the marker is in the recycleView.
      * @return the amount of points the player needs to be able to buy the marker.
      */

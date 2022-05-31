@@ -34,7 +34,6 @@ public class BaseActivity extends AppCompatActivity implements LifecycleEventObs
     MenuItem itemOfMenu;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +99,7 @@ public class BaseActivity extends AppCompatActivity implements LifecycleEventObs
     }
 
     /**
-     * Schedule job.
+     * Schedule job. if the battery isn't low.
      */
     public void scheduleJob() {
         ComponentName componentName = new ComponentName(this, sendNotificationToAFKUser.class);
@@ -120,7 +119,8 @@ public class BaseActivity extends AppCompatActivity implements LifecycleEventObs
     public void cancelJob() {
         JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         scheduler.cancel(123);
-        Log.d(TAG, "Job cancelled");
+        Log.d("banana", "Job cancelled");
+
     }
 
     /**

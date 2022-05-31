@@ -33,10 +33,25 @@ import java.util.Random;
  * The type Fire base util.
  */
 public class FireBaseUtil {
+    /**
+     * connection to the fire base
+     */
     private  final static FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
+    /**
+     * a Random static object.
+     */
     private final static Random rng = new Random();
+    /**
+     * lat that the class get.
+     */
     private static double lat=32.79139242166433;
+    /**
+     * lon that the class get.
+     */
     private static double lon=34.99034071292447;
+    /**
+     * the current user that loged in.
+     */
     private static FirebaseUser currentUser;
     private static final FirebaseAuth userAuth=FirebaseAuth.getInstance();;
 

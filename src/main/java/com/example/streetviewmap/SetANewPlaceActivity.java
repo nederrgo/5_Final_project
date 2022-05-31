@@ -26,19 +26,40 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.StreetViewPanoramaLocation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * The type Set a new place activity.
+ */
 public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
+    /**
+     * The Street view player vision.
+     */
     StreetViewPanoramaView streetViewPlayerVision;
+    /**
+     * The Map view.
+     */
     MapView mapView;
     private StreetViewPanorama mapStreetView;
     private GoogleMap gMap;
+    /**
+     * floating button that make the map view invisble and visible on click
+     */
     private FloatingActionButton openAndCloseMap;
     private Button sendToPlaceButton;
     private boolean isGussMapVisible=false;
     private MarkerOptions markerOptions;
     private Marker lastMarked;
+    /**
+     * The Loading map.
+     */
     public ProgressBar loadingMap;
+    /**
+     * Check is it the first time loading.
+     */
     boolean firstTimeLoading =true;
+    /**
+     * imageButton
+     */
     private ImageButton goBackToManuButton;
     private Button setNewPlaceButton;
     private StreetViewPanoramaLocation cameraPov;
@@ -106,6 +127,10 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
             chosePlaceWithMarker(latLng);
         } );
     }
+
+    /**
+     * find views by ids
+     */
     private void findViewsByIds(){
         streetViewPlayerVision =findViewById(R.id.mapViewStreetAdminSetActivity);
         mapView=findViewById(R.id.mapViewChoosePositionAdminSetActivity);
@@ -115,6 +140,9 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
         goBackToManuButton =findViewById(R.id.goBackMenuButtonAdminSetActivity);
         setNewPlaceButton=findViewById(R.id.setPlaceButton);
     }
+    /**
+     * set on click listens
+     */
     private void setClickers(){
         openAndCloseMap.setOnClickListener(view -> {
             changeMapAndGussButtonVisibilityState();
@@ -158,6 +186,9 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
         }});
     }
 
+    /**
+     * changes map and guss button visibility state
+     */
     private void changeMapAndGussButtonVisibilityState(){
         if(isGussMapVisible){
             mapView.setVisibility(View.INVISIBLE);

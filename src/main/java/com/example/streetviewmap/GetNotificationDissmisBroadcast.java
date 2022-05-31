@@ -8,10 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ * The type Get notification dissmis broadcast.
+ */
 public class GetNotificationDissmisBroadcast extends BroadcastReceiver {
+    /**
+     * Instantiates a new Get notification dissmis broadcast.
+     */
     public GetNotificationDissmisBroadcast() {
 
     }
+    /**
+     * active when receiving intent
+     * @param context the context of the intent
+     * @param intent the intent that was sent to the receiver
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         ComponentName componentName = new ComponentName(context,sendNotificationToAFKUser.class);

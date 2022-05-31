@@ -11,18 +11,30 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+/**
+ * The type Send notification to afk user.
+ */
 @SuppressLint("SpecifyJobSchedulerIdRange")
 public class sendNotificationToAFKUser extends JobService {
+    /**
+     * check if the job cancelled.
+     */
     boolean jobCancelled=false;
+    /**
+     * The constant NOTIFICATION_CHANNEL_ID.
+     */
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
+    /**
+     * The constant default_notification_channel_id.
+     */
     private final static String default_notification_channel_id = "default" ;
+
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                     createNotification();
-
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -46,6 +58,10 @@ public class sendNotificationToAFKUser extends JobService {
     public void onDestroy() {
         super.onDestroy();
     }
+
+    /**
+     * Creates a notification.
+     */
     private void createNotification () {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService( NOTIFICATION_SERVICE ) ;
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext() , default_notification_channel_id ) ;

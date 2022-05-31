@@ -21,24 +21,49 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * The type Marker store activity.
+ */
 public class MarkerStoreActivity extends BaseActivity {
+    /**
+     * The Recycler view marker data.
+     */
     ArrayList<RecyclerViewMarkerData> recyclerViewMarkerData;
-    private static int[] markersId={R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.fire_base_marker,R.drawable.normal_marker,R.drawable.doge_marker,R.drawable.normal_marker,R.drawable.doge_marker};
+    /**
+     * array of the markers images ids.
+     */
+    private static int[] markersId={R.drawable.normal_marker,R.drawable.yellow_marker,R.drawable.doge_marker,R.drawable.fire_base_marker};
+
     private int[] positions;
+    /**
+     * player score text view
+     */
     private TextView playerScoreText;
+    /**
+     * The constant amountOfMarkers.
+     */
     public static int amountOfMarkers=markersId.length;
+    /**
+     * The Broadcast receiver.
+     */
     BroadcastReceiver broadcastReceiver;
+    /**
+     * The What markers are purchased.
+     */
     ArrayList<Integer>whatMarkersArePurchased;
+    /**
+     * The User marker list.
+     */
     boolean[] userMarkerList=new boolean[markersId.length];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker_store);
+        //get the array from the intent from the mainActivity
         whatMarkersArePurchased=getIntent().getIntegerArrayListExtra("markersBought");
         userMarkerOwnedList();
         RecyclerView markersOptionsToBuy = (RecyclerView) findViewById(R.id.recyclerview);
         setPositionsList();
-        markersOptionsToBuy.setHasFixedSize(true);
         recyclerViewMarkerData=RecyclerViewMarkerData.createMarkersList(markersId,userMarkerList,positions);
         MarkersAdpters markersAdpters= new MarkersAdpters(recyclerViewMarkerData);
         markersOptionsToBuy.setAdapter(markersAdpters);
@@ -51,6 +76,7 @@ public class MarkerStoreActivity extends BaseActivity {
         }else{
             setText();
         }
+        //broadcastReceiver that update the list of markers bought and refresh the page.
          broadcastReceiver=new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -65,17 +91,23 @@ public class MarkerStoreActivity extends BaseActivity {
                 refreshPage.putExtra("playerScore",scorePlayerHave);
                 startActivity(refreshPage);
                 finish();
-                //playerScoreText.setText(scorePlayerHave-CalculateSystem.storePointCost(position)+" points");
             }
         };
         registerReceiver(broadcastReceiver, new IntentFilter("refreshPage"));
     }
+    /**
+     * set the positions[] list to have the position number in the array in that position
+     */
     private void setPositionsList(){
         positions=new int[markersId.length];
         for (int i = 0; i <positions.length ; i++) {
             positions[i]=i;
         }
     }
+
+    /**
+     * gets the user document from the data base(fire base) and then set the text of playerScoreText to the user points.
+     */
     private void playerScore(){
         FirebaseFirestore dataBase=FirebaseFirestore.getInstance();
         FirebaseAuth userAuth = FirebaseAuth.getInstance();
@@ -89,6 +121,10 @@ public class MarkerStoreActivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * set text of the point the player had into playerScoreText
+     */
     private void setText(){
          long score=getIntent().getLongExtra("playerScore",0);
          playerScoreText.setText(score+" points");
@@ -98,6 +134,9 @@ public class MarkerStoreActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
     }
+    /**
+     * @return updated array of booleans that say which markers the user own.
+     */
     private boolean[] userMarkerOwnedList(){
         for(int i =0;i<whatMarkersArePurchased.size();i++){
             userMarkerList[whatMarkersArePurchased.get(i)]=true;

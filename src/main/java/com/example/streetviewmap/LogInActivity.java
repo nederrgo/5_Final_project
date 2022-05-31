@@ -14,10 +14,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * The type Log in activity.
+ */
 public class LogInActivity extends BaseActivity {
+    /**
+     * The Log in button.
+     */
     Button logInButton;
+    /**
+     * The Email text.
+     */
     EditText emailText;
+    /**
+     * The Password text.
+     */
     EditText passwordText;
+    /**
+     * The User auth.
+     */
     FirebaseAuth userAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +53,22 @@ public class LogInActivity extends BaseActivity {
         });
 
     }
+
+    /**
+     * Find views by ids.
+     */
     public void findViewsByIds(){
         logInButton=findViewById(R.id.LogInButton);
         emailText=findViewById(R.id.editTextTextEmailAddressLogIn);
         passwordText=findViewById(R.id.editTextTextPasswordLogIn);
     }
+
+    /**
+     * Login.
+     *
+     * @param email    the email
+     * @param password the password
+     */
     public void login(String email,String password){
         userAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

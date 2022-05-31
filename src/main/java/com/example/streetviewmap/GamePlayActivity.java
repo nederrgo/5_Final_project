@@ -21,19 +21,49 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * The type Game play activity.
+ */
 public class GamePlayActivity extends BaseActivity implements OnStreetViewPanoramaReadyCallback, OnMapReadyCallback {
 
+    /**
+     * The Street view player vision.
+     */
     StreetViewPanoramaView streetViewPlayerVision;
+    /**
+     * The Map view.
+     */
     MapView mapView;
     private LatLng playerPosition;
     private StreetViewPanorama mapStreetView;
+    /**
+     * google map
+     */
     private GoogleMap gMap;
+    /**
+     * button that close and open the map
+     */
     private FloatingActionButton openAndCloseMap;
+    /**
+     * button that submit the guss of the player
+     */
     private Button submitGussButton;
+    /**
+     * check if we can see the google map
+     */
     private boolean isGussMapVisible=false;
     private MarkerOptions markerOptions;
+    /**
+     * last marker that was marked on the map
+     */
     private Marker lastMarked;
+    /**
+     * progress bar that tell us that the map is loading
+     */
     public ProgressBar loadingMap;
+    /**
+     * The First time loading.
+     */
     boolean firstTimeLoading =true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +104,11 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
         streetViewPlayerVision.onResume();
         mapView.onResume();
     }
+
+    /**
+     * active when the street view is ready.
+     * @param streetViewPanorama what we see on the google street view.
+     */
     @Override
     public void onStreetViewPanoramaReady(@NonNull StreetViewPanorama streetViewPanorama) {
         mapStreetView=streetViewPanorama;
@@ -91,6 +126,10 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
 
     }
 
+    /**
+     * active when google map view is ready
+     * @param googleMap google map of the view
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap=googleMap;
@@ -98,6 +137,10 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
             chosePlaceWithMarker(latLng);
         } );
     }
+
+    /**
+     * find views by ids
+     */
     private void findViewsByIds(){
         streetViewPlayerVision =findViewById(R.id.mapViewStreet);
         mapView=findViewById(R.id.mapViewChoosePosition);
@@ -105,6 +148,10 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
         submitGussButton=findViewById(R.id.GussingPlaceButton);
         loadingMap=findViewById(R.id.mapLoding);
     }
+
+    /**
+     * set on click events
+     */
     private void setClickers(){
         openAndCloseMap.setOnClickListener(view -> {
             changeMapAndGussButtonVisibilityState();
@@ -114,7 +161,9 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
         });
     }
 
-
+    /**
+     * make the map and submit button visible and invisible depend on the state of visibility.
+     */
     private void changeMapAndGussButtonVisibilityState(){
         if(isGussMapVisible){
             mapView.setVisibility(View.INVISIBLE);
@@ -123,9 +172,13 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
             mapView.setVisibility(View.VISIBLE);
             submitGussButton.setVisibility(View.VISIBLE);
         }
-
         isGussMapVisible=!isGussMapVisible;
     }
+
+    /**
+     * make a marker and save the location that the player pressed.
+     * @param latLng the location the player clicked on the map.
+     */
     private void chosePlaceWithMarker(LatLng latLng) {
         if(lastMarked!=null){lastMarked.remove();}else{
             submitGussButton.setEnabled(true);
@@ -138,6 +191,9 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
         }
     }
 
+    /**
+     * submit the player guss
+     */
     private void submitGuss() {
         LatLng gussingPosition=markerOptions.getPosition();
         double latGussed=gussingPosition.latitude;
@@ -148,6 +204,15 @@ public class GamePlayActivity extends BaseActivity implements OnStreetViewPanora
         startActivity(sendToScore);
         finish();
     }
+
+    /**
+     * sends intent to guss player guss after submit
+     * @param latGussed lat of the location the player gussed
+     * @param lonGussed lon of the location the player gussed
+     * @param lonPosition lon of the player real location
+     * @param latPosition lat of the player real location
+     * @return the intent
+     */
     private Intent CreateIntentOfGuss(double latGussed, double lonGussed, double lonPosition, double latPosition){
         Intent sendToScore= new Intent(getApplicationContext(), RoundStatsActivity.class);
         sendToScore.putExtra("latGussed", latGussed);

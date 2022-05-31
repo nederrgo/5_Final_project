@@ -28,20 +28,65 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * The type Round stats activity.
+ */
 public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallback {
+    /**
+     * The lat of the player guss .
+     */
     private double latGussed;
+    /**
+     * The lon of the player guss .
+     */
     private double lonGussed;
+    /**
+     * The real lon of the player.
+     */
     private double lonRealPosition;
+    /**
+     * The real lat of the player.
+     */
     private double latRealPosition;
+    /**
+     * The position of the player guss .
+     */
     LatLng gussPosition;
+    /**
+     * The real position of the player.
+     */
     LatLng realPosition;
+    /**
+     * map view.
+     */
     private MapView showDistanceMap;
+    /**
+     * text that show the distance between the real place and player guss.
+     */
     private TextView distanceBetweenPlaces;
+    /**
+     * progressBar that show when the map is ready.
+     */
     private ProgressBar scoreBar;
+    /**
+     * button that start next round.
+     */
     private Button startNextRound;
+    /**
+     * text view for showing the round number.
+     */
     private TextView roundNumText;
+    /**
+     * text view to show how much points the player earned in this game.
+     */
     private TextView pointsInGameText;
+    /**
+     * The Points of that round.
+     */
     int points;
+    /**
+     * The Points in game.
+     */
     int pointsInGame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +111,6 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
         super.onStart();
         showDistanceMap.onStart();
     }
-    //
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -89,6 +133,10 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
         setUpForMap(googleMap);
         addMarkers(googleMap);
     }
+
+    /**
+     * Find views by ids.
+     */
     public void findViewsByIds(){
         showDistanceMap=findViewById(R.id.mapViewShowDistance);
         distanceBetweenPlaces=findViewById(R.id.DistanceText);
@@ -97,6 +145,10 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
         roundNumText=findViewById(R.id.numOfRoundText);
         pointsInGameText=findViewById(R.id.pointsInGameText);
     }
+
+    /**
+     * Get intent data.
+     */
     public void getIntentData(){
         Intent intentSended=getIntent();
         latGussed=intentSended.getDoubleExtra("latGussed",0);
@@ -106,6 +158,12 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
         gussPosition=new LatLng(latGussed,lonGussed);
         realPosition=new LatLng(latRealPosition, lonRealPosition);
     }
+
+    /**
+     * make it so the google map will zoom to to be able to see the 2 markers that it has on it.
+     *
+     * @param googleMap the google map
+     */
     public void setUpForMap(GoogleMap googleMap){
         LatLngBounds.Builder builder=new LatLngBounds.Builder();
         builder.include(gussPosition);
@@ -115,6 +173,11 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         googleMap.moveCamera(cu);
     }
+
+    /**
+     * add 2 markers to the google map
+     * @param googleMap the map that the function adds the marker on;
+     */
     private void addMarkers(GoogleMap googleMap) {
         MarkerOptions markerOptions= new MarkerOptions().position(gussPosition).title("your guss");
        Marker yourGussMarker= googleMap.addMarker(markerOptions);
@@ -123,6 +186,7 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
             yourGussMarker.setIcon(BitmapDescriptorFactory.fromBitmap(marker));
         }
          markerOptions= new MarkerOptions().position(realPosition).title("where you were");
+
         Marker realPlaceMarker=googleMap.addMarker(markerOptions);
         if(getCustomMarker()!=null){
             Bitmap marker=getCustomMarker();
@@ -130,6 +194,10 @@ public class RoundStatsActivity extends BaseActivity implements OnMapReadyCallba
         }
         Log.i("banana", "addMarkers: ");
     }
+
+    /**
+     * Set on clickers listeners.
+     */
     public void setClickers(){
         if(!RoundSystem.isItLastRound()){
             startNextRound.setOnClickListener(view -> {
