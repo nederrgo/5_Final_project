@@ -115,7 +115,6 @@ public class SetANewPlaceActivity extends BaseActivity implements OnMapReadyCall
                 firstTimeLoading=false;
             }
         });
-
     }
 
     @Override

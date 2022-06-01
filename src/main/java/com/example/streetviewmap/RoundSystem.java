@@ -14,7 +14,13 @@ public class RoundSystem {
      * The constant roundNum.
      */
     protected static int roundNum=1;
+    /**
+     * The constant points in game.
+     */
     private static int pointsOfGame=0;
+    /**
+     * the bit map of the markers in the round.
+     */
     private static Bitmap customMarker;
 
     /**

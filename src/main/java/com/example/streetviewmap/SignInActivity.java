@@ -79,7 +79,6 @@ public class SignInActivity extends BaseActivity {
                     data.put("password",password);
                     data.put("points",0);
                     data.put("role","user");
-                    data.put("marker0",true);
                     DocumentReference userDuc= dataBase.collection("users").document(email);
                     userDuc.set(data);
                     //starting mainActivity and stopping this activity.

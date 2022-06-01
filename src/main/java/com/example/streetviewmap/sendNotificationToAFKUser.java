@@ -31,19 +31,8 @@ public class sendNotificationToAFKUser extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                    createNotification();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                Log.d("work", "Job finished");
-                jobFinished(jobParameters, false);
-            }
-        }).start();
+        createNotification();
+        jobFinished(jobParameters, false);
         return true;
     }
 

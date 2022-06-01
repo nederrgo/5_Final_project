@@ -44,6 +44,7 @@ public class AddAdminLocationActivity extends BaseActivity implements OnStreetVi
      * The Lon of the player location (comes from camera pov) .
      */
     double lon;
+
     /**
      * The Set new location button.
      */
